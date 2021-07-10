@@ -1,4 +1,4 @@
-int FLAG =0;
+int FLAG = 0;
 
 void setup()
 {
@@ -25,7 +25,7 @@ void setup()
   digitalWrite(A, HIGH);
   digitalWrite(LS, HIGH);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Program Start !");
 }
 
@@ -46,20 +46,20 @@ void loop()
     TUTUP();
 
   //TOMBOL D
-  if (digitalRead(D) == 0)
+  if (digitalRead(D) == 0 && FLAG == 0)
   {
     Serial.println("D");
     //while (digitalRead(D) == 0);
   };
 
   //LIMIT SWITCH
-  if ((digitalRead(LS) == 1 && FLAG==0)||digitalRead(D) == 0)
+  if ((digitalRead(LS) == 1 && FLAG == 0) || (digitalRead(D) == 0 && FLAG == 0))
     CEK_LS();
 }
 
 void BUKA_SEDIKIT()
 {
-  FLAG=0;
+  FLAG = 0;
   int index = 0;
   Serial.println("A");
   while (digitalRead(A) == 0)
@@ -78,7 +78,7 @@ void BUKA_SEDIKIT()
     delay(10);
     Serial.print("Speed:");
     Serial.println(index);
-    if (digitalRead(LS) == 1||digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
       break;
   }
 
@@ -86,7 +86,7 @@ void BUKA_SEDIKIT()
   Serial.println("Delay 10s !");
   for (index = 0; index <= 1000; index++)
   {
-    if (digitalRead(LS) == 1||digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
       break;
     delay(10);
   }
@@ -98,7 +98,7 @@ void BUKA_SEDIKIT()
 
 void BUKA_FULL()
 {
-  FLAG=0;
+  FLAG = 0;
   int index = 0;
   Serial.println("B");
   while (digitalRead(B) == 0)
@@ -114,7 +114,7 @@ void BUKA_FULL()
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 1||digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
       break;
   }
   Serial.println("Wait LS !");
@@ -122,7 +122,7 @@ void BUKA_FULL()
 
 void TUTUP()
 {
-  FLAG=0;
+  FLAG = 0;
   int index = 0;
   Serial.println("C");
   while (digitalRead(C) == 0)
@@ -137,7 +137,7 @@ void TUTUP()
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 1||digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
       break;
   }
   Serial.println("Wait LS !");
@@ -145,7 +145,7 @@ void TUTUP()
 
 void CEK_LS()
 {
-  FLAG=1;
+  FLAG = 1;
   Serial.println("LS ON");
   analogWrite(PWM, 0);
   Serial.println("Motor Stop !");
