@@ -70,6 +70,18 @@ void BUKA_SEDIKIT()
   digitalWrite(DIR, LOW);
   delay(1000);
 
+  Serial.println("LS Realese !");
+  for (index = 0; index <= 255; index++)
+  {
+    //analogWrite(PWM, index);
+    analogWrite(PWM, index);
+    delay(10);
+    Serial.print("Speed:");
+    Serial.println(index);
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+      break;
+  }
+
   Serial.println("Akselerasi !");
   for (index = 0; index <= 255; index++)
   {
@@ -109,6 +121,15 @@ void BUKA_FULL()
   digitalWrite(DIR, LOW);
   delay(1000);
 
+  Serial.println("LS Realese !");
+  for (index = 0; index <= 255; index++)
+  {
+    analogWrite(PWM, index);
+    delay(10);
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+      break;
+  }
+
   Serial.println("Akselerasi !");
   for (index = 0; index <= 255; index++)
   {
@@ -131,6 +152,15 @@ void TUTUP()
   Serial.println("Direction Set!");
   digitalWrite(DIR, HIGH);
   delay(1000);
+
+  Serial.println("LS Realese !");
+  for (index = 0; index <= 255; index++)
+  {
+    analogWrite(PWM, index);
+    delay(10);
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+      break;
+  }
 
   Serial.println("Akselerasi !");
   for (index = 0; index <= 255; index++)
