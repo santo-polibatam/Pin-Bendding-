@@ -35,7 +35,7 @@ void setup()
 void loop()
 {
   int index = 0;
-
+  //print waktu
   if (((millis() % 1000) == 0) && myTime > 0)
     Serial.println((millis() - myTime) / 1000);
   //TOMBOL A BUKA SEDIKIT
