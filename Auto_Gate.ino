@@ -1,4 +1,5 @@
 int FLAG = 0;
+unsigned long myTime;
 
 void setup()
 {
@@ -10,6 +11,7 @@ void setup()
 #define LS 4
 #define PWM 3
 #define DIR 6
+#define TimeOut 90000
 
   pinMode(D, INPUT);
   pinMode(C, INPUT);
@@ -33,28 +35,40 @@ void loop()
 {
   int index = 0;
 
+  if (((millis() % 1000) == 0) && myTime > 0)
+    Serial.println((millis() - myTime) / 1000);
   //TOMBOL A BUKA SEDIKIT
   if (digitalRead(A) == 0)
+  {
+    myTime = millis();
     BUKA_SEDIKIT();
-
+  }
   //TOMBOL B BUKA PENUH
   if (digitalRead(B) == 0)
+  {
+    myTime = millis();
     BUKA_FULL();
+  }
 
   //TOMBOL C
   if (digitalRead(C) == 0)
+  {
+    myTime = millis();
     TUTUP();
+  }
 
   //TOMBOL D
   if (digitalRead(D) == 0 && FLAG == 0)
   {
     Serial.println("D");
-    //while (digitalRead(D) == 0);
   };
 
   //LIMIT SWITCH
-  if ((digitalRead(LS) == 1 && FLAG == 0) || (digitalRead(D) == 0 && FLAG == 0))
+  if ((digitalRead(LS) == 1 && FLAG == 0) || (digitalRead(D) == 0 && FLAG == 0) || ((millis() - myTime) >= TimeOut && myTime > 0))
+  {
     CEK_LS();
+    myTime = 0;
+  }
 }
 
 void BUKA_SEDIKIT()
@@ -78,19 +92,19 @@ void BUKA_SEDIKIT()
     delay(10);
     Serial.print("Speed:");
     Serial.println(index);
-    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
 
   Serial.println("Akselerasi !");
-  for (index = 0; index <= 255; index++)
+  for (index = index; index <= 255; index++)
   {
     //analogWrite(PWM, index);
     analogWrite(PWM, index);
     delay(10);
     Serial.print("Speed:");
     Serial.println(index);
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
 
@@ -98,7 +112,7 @@ void BUKA_SEDIKIT()
   Serial.println("Delay 10s !");
   for (index = 0; index <= 1000; index++)
   {
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
     delay(10);
   }
@@ -126,16 +140,16 @@ void BUKA_FULL()
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
 
   Serial.println("Akselerasi !");
-  for (index = 0; index <= 255; index++)
+  for (index = index; index <= 255; index++)
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
   Serial.println("Wait LS !");
@@ -158,16 +172,16 @@ void TUTUP()
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 0 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 0 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
 
   Serial.println("Akselerasi !");
-  for (index = 0; index <= 255; index++)
+  for (index = index; index <= 255; index++)
   {
     analogWrite(PWM, index);
     delay(10);
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0)
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
   Serial.println("Wait LS !");
