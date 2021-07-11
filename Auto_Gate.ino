@@ -31,7 +31,7 @@ void setup()
   Serial.println("Program Start !");
 }
 
-//Main
+//Main Program
 void loop()
 {
   int index = 0;
