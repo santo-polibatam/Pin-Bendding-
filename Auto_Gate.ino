@@ -11,7 +11,7 @@ void setup()
 #define LS 4
 #define PWM 3
 #define DIR 6
-#define TimeOut 90000
+#define TimeOut 90000  //90 s
 
   pinMode(D, INPUT);
   pinMode(C, INPUT);
