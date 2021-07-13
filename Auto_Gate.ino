@@ -10,8 +10,9 @@ void setup()
 #define D A0
 #define LS 4
 #define PWM 3
-#define DIR 6
-#define TimeOut 90000  //90 s
+#define PS 6
+#define DIR 7
+#define TimeOut 60000 //60 s
 
   pinMode(D, INPUT);
   pinMode(C, INPUT);
@@ -20,12 +21,16 @@ void setup()
   pinMode(LS, INPUT);
   pinMode(PWM, OUTPUT);
   pinMode(DIR, OUTPUT);
+  pinMode(PS, OUTPUT);
 
   digitalWrite(D, HIGH);
   digitalWrite(C, HIGH);
   digitalWrite(B, HIGH);
   digitalWrite(A, HIGH);
   digitalWrite(LS, HIGH);
+
+  digitalWrite(PS, HIGH);
+  digitalWrite(DIR, HIGH);
 
   Serial.begin(115200);
   Serial.println("Program Start !");
@@ -36,9 +41,9 @@ void loop()
 {
   int index = 0;
   //print waktu per detik ke Serial Port
-  if (((millis() % 1000) == 0) && myTime > 0)
+  if (((millis() % 500) == 0) && myTime > 0)
     Serial.println((millis() - myTime) / 1000);
-    
+
   //TOMBOL A BUKA SEDIKIT
   if (digitalRead(A) == 0)
   {
@@ -68,7 +73,7 @@ void loop()
   //LIMIT SWITCH
   if ((digitalRead(LS) == 1 && FLAG == 0) || (digitalRead(D) == 0 && FLAG == 0) || ((millis() - myTime) >= TimeOut && myTime > 0))
   {
-    CEK_LS();
+    MATIKAN_MOTOR();
     myTime = 0;
   }
 }
@@ -82,6 +87,9 @@ void BUKA_SEDIKIT()
   {
   }
 
+  //NYALAKAN PS
+  digitalWrite(PS, LOW);
+  delay(2000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
   delay(1000);
@@ -111,8 +119,8 @@ void BUKA_SEDIKIT()
   }
 
   analogWrite(PWM, 255);
-  Serial.println("Delay 10s !");
-  for (index = 0; index <= 1000; index++)
+  Serial.println("Delay 5s !");
+  for (index = 0; index <= 500; index++)
   {
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
@@ -133,6 +141,9 @@ void BUKA_FULL()
   {
   }
 
+  //NYALAKAN PS
+  digitalWrite(PS, LOW);
+  delay(2000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
   delay(1000);
@@ -165,7 +176,11 @@ void TUTUP()
   while (digitalRead(C) == 0)
   {
   }
-  Serial.println("Direction Set!");
+
+  //NYALAKAN PS
+  digitalWrite(PS, LOW);
+  delay(2000);
+  Serial.println("Direction set!");
   digitalWrite(DIR, HIGH);
   delay(1000);
 
@@ -189,10 +204,14 @@ void TUTUP()
   Serial.println("Wait LS !");
 };
 
-void CEK_LS()
+void MATIKAN_MOTOR()
 {
   FLAG = 1;
   Serial.println("LS ON");
   analogWrite(PWM, 0);
   Serial.println("Motor Stop !");
+  delay(1000);
+  digitalWrite(DIR, HIGH);
+  delay(1000);
+  digitalWrite(PS, HIGH);
 };
