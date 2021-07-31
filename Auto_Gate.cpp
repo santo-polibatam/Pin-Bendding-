@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 int FLAG = 0;
 unsigned long myTime;
 
@@ -89,10 +91,10 @@ void BUKA_SEDIKIT()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
@@ -143,10 +145,10 @@ void BUKA_FULL()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
@@ -179,10 +181,10 @@ void TUTUP()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, HIGH);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
