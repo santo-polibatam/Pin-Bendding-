@@ -41,7 +41,7 @@ void setup()
   digitalWrite(PS, HIGH);
   digitalWrite(DIR, HIGH);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Program Start !");
 }
 
