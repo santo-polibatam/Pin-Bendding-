@@ -1,5 +1,14 @@
+#include <Arduino.h>
+
 int FLAG = 0;
 unsigned long myTime;
+
+void BUKA_SEDIKIT();
+void BUKA_FULL();
+void MATIKAN_MOTOR();
+void TUTUP();
+void MATIKAN_MOTOR();
+int BACA_REMOTE();
 
 void setup()
 {
@@ -39,7 +48,7 @@ void setup()
 //Main Program
 void loop()
 {
-  int index = 0;
+  //int index = 0;
   //print waktu per detik ke Serial Port
   if (((millis() % 500) == 0) && myTime > 0)
     Serial.println((millis() - myTime) / 1000);
@@ -89,10 +98,10 @@ void BUKA_SEDIKIT()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
@@ -143,10 +152,10 @@ void BUKA_FULL()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, LOW);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
@@ -165,6 +174,13 @@ void BUKA_FULL()
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
+
+  for (index = 0; index <= 10000; index++)
+  {
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
+      break;
+  }
+  analogWrite(PWM, 128);
   Serial.println("Wait LS !");
 }
 
@@ -179,10 +195,10 @@ void TUTUP()
 
   //NYALAKAN PS
   digitalWrite(PS, LOW);
-  delay(2000);
+  delay(1000);
   Serial.println("Direction set!");
   digitalWrite(DIR, HIGH);
-  delay(1000);
+  delay(500);
 
   Serial.println("LS Realese !");
   for (index = 0; index <= 255; index++)
@@ -201,6 +217,13 @@ void TUTUP()
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
+
+  for (index = 0; index <= 10000; index++)
+  {
+    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
+      break;
+  }
+  analogWrite(PWM, 128);
   Serial.println("Wait LS !");
 };
 
@@ -214,4 +237,13 @@ void MATIKAN_MOTOR()
   digitalWrite(DIR, HIGH);
   delay(1000);
   digitalWrite(PS, HIGH);
+};
+
+int BACA_REMOTE()
+{
+  if (digitalRead(A) == 0 || digitalRead(B) == 0 || digitalRead(C) == 0 || digitalRead(D) == 0)
+  {
+    return 1;
+  }
+  return 0;
 };
