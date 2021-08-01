@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 int FLAG = 0;
+bool TombolA = 0;
 unsigned long myTime;
 
 void BUKA_SEDIKIT();
@@ -56,6 +57,7 @@ void loop()
   //TOMBOL A BUKA SEDIKIT
   if (digitalRead(A) == 0)
   {
+    TombolA = 1;
     myTime = millis();
     BUKA_SEDIKIT();
   }
@@ -71,6 +73,7 @@ void loop()
   {
     myTime = millis();
     TUTUP();
+    TombolA = 0;
   }
 
   //TOMBOL D
@@ -175,56 +178,69 @@ void BUKA_FULL()
       break;
   }
 
-  for (index = 0; index <= 10000; index++)
+  for (index = 0; index <= 7000; index++)
   {
+    delay(1);
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
   }
-  analogWrite(PWM, 128);
+  Serial.println("Slow !");
+  analogWrite(PWM, 40);
   Serial.println("Wait LS !");
 }
 
 void TUTUP()
 {
-  FLAG = 0;
-  int index = 0;
-  Serial.println("C");
-  while (digitalRead(C) == 0)
+  if (TombolA == 0)
   {
+    FLAG = 0;
+    int index = 0;
+    Serial.println("C");
+    while (digitalRead(C) == 0)
+    {
+    }
+
+    //NYALAKAN PS
+    digitalWrite(PS, LOW);
+    delay(1000);
+    Serial.println("Direction set!");
+    digitalWrite(DIR, HIGH);
+    delay(500);
+
+    Serial.println("LS Realese !");
+    for (index = 0; index <= 255; index++)
+    {
+      analogWrite(PWM, index);
+      delay(10);
+      if (digitalRead(LS) == 0 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
+        break;
+    }
+
+    Serial.println("Akselerasi !");
+    for (index = index; index <= 255; index++)
+    {
+      analogWrite(PWM, index);
+      delay(10);
+      if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
+        break;
+    }
+
+    for (index = 0; index <= 7000; index++)
+    {
+      delay(1);
+      if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
+        break;
+    }
+    Serial.println("Slow !");
+    analogWrite(PWM, 40);
+    Serial.println("Wait LS !");
   }
-
-  //NYALAKAN PS
-  digitalWrite(PS, LOW);
-  delay(1000);
-  Serial.println("Direction set!");
-  digitalWrite(DIR, HIGH);
-  delay(500);
-
-  Serial.println("LS Realese !");
-  for (index = 0; index <= 255; index++)
+  else
   {
-    analogWrite(PWM, index);
-    delay(10);
-    if (digitalRead(LS) == 0 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
-      break;
+    Serial.println("Slow !");
+    analogWrite(PWM, 40);
+    Serial.println("Wait LS !");
   }
-
-  Serial.println("Akselerasi !");
-  for (index = index; index <= 255; index++)
-  {
-    analogWrite(PWM, index);
-    delay(10);
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
-      break;
-  }
-
-  for (index = 0; index <= 10000; index++)
-  {
-    if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
-      break;
-  }
-  analogWrite(PWM, 128);
-  Serial.println("Wait LS !");
 };
 
 void MATIKAN_MOTOR()
