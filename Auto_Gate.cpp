@@ -1,5 +1,8 @@
 #include <Arduino.h>
+<<<<<<< HEAD:Auto_Gate.cpp
 //#include <avr/wdt.h>
+=======
+>>>>>>> 664f26fd11530794b14f4758ae5aff369e0e8a08:Auto_Gate.ino
 
 int FLAG = 0;
 bool TombolA = 0;

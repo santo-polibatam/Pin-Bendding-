@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Arduino",
-            "compilerPath": "C:\\ARDUINO\\arduino-1.8.15\\hardware\\tools\\avr\\bin\\avr-g++",
+            "compilerPath": "C:\\arduino-1.8.15\\hardware\\tools\\avr\\bin\\avr-g++",
             "compilerArgs": [
                 "-std=gnu++11",
                 "-fpermissive",
