@@ -123,7 +123,7 @@ void BUKA_SEDIKIT()
   {
     //analogWrite(PWM, index);
     analogWrite(PWM, index);
-    delay(10);
+    delay(5);
     Serial.print("Speed:");
     Serial.println(index);
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
@@ -132,7 +132,7 @@ void BUKA_SEDIKIT()
 
   analogWrite(PWM, 255);
   Serial.println("Delay 5s !");
-  for (index = 0; index <= 500; index++)
+  for (index = 0; index <= 100; index++)
   {
     if (digitalRead(LS) == 1 || digitalRead(D) == 0 || ((millis() - myTime) >= TimeOut && myTime > 0))
       break;
@@ -237,6 +237,13 @@ void TUTUP()
   }
   else
   {
+    //NYALAKAN PS
+    digitalWrite(PS, LOW);
+    delay(1000);
+    Serial.println("Direction set!");
+    digitalWrite(DIR, HIGH);
+    delay(500);
+    
     Serial.println("Slow !");
     analogWrite(PWM, 40);
     Serial.println("Wait LS !");
